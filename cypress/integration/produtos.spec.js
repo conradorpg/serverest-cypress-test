@@ -30,14 +30,15 @@ describe('Testes com a API Serverest - Produtos', () => {
   });
 
   it('Cadastrar produtos', () => {
-    let num = Math.floor(Math.random() * 100000)
+    let num1 = Math.floor(Math.random() * 100)
+    let num2 = Math.floor(Math.random() * 100)
 
     cy.request({
       method: "POST",
       url: "/produtos",
       headers: { authorization: token },
       body: {
-        "nome": `Goldship Gamer X + ${num}`,
+        "nome": `Goldship Gamer X + ${num1} + ${num2}`,
         "preco": 160,
         "descricao": "Mouse",
         "quantidade": 250
