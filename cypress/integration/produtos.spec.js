@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import faker from "@faker-js/faker"
+import contrato from '../contracts/produtos.contracts'
 
 describe('Testes com a API Serverest - Produtos', () => {
   let token
@@ -13,7 +14,13 @@ describe('Testes com a API Serverest - Produtos', () => {
 
     cy.productId()
       .then(code => { productId = code })
-  })
+  });
+
+  it('Validar contrato de produtos', () => {
+    cy.request('/produtos').then(Response => {
+      return contrato.validateAsync(Response.body)
+    })
+  });
 
   it('Buscar produtos', () => {
     cy.request({
@@ -130,7 +137,7 @@ describe('Testes com a API Serverest - Produtos', () => {
         // expect(Response.body.message).to.equal('Registro alterado com sucesso')
       })
     })
-  })
+  });
 
   it('Cadastrar produto em seguida edita-lo', () => {
     let num = Math.floor(Math.random() * 100000)
@@ -141,19 +148,19 @@ describe('Testes com a API Serverest - Produtos', () => {
         let id = Response.body._id
         cy.request({
           method: 'PUT',
-          url: `produtos/${id}`,
+          url: `/produtos/${id}`,
           headers: { authorization: token },
           body: {
             "nome": item,
             "preco": 350,
             "descricao": "Mouse",
             "quantidade": 350
-          }
+          },
         }).then(Response => {
           expect(Response.body.message).to.equal('Registro alterado com sucesso')
         })
       })
-  })
+  });
 
   // -- CENÁRIOS NEGATIVOS --
 

@@ -37,9 +37,9 @@ Cypress.Commands.add('token', (email, password) => {
     expect(Response.status).to.equal(200)
     return Response.body.authorization
   })
-})
+});
 
-Cypress.Commands.add('productId', () => {  
+Cypress.Commands.add('productId', () => {
   cy.request({
     method: "GET",
     url: "/produtos",
@@ -50,7 +50,7 @@ Cypress.Commands.add('productId', () => {
   })
 })
 
-Cypress.Commands.add('userId', () => {  
+Cypress.Commands.add('userId', () => {
   cy.request({
     method: "GET",
     url: "/usuarios",
@@ -59,7 +59,7 @@ Cypress.Commands.add('userId', () => {
     expect(Response.status).to.equal(200)
     return Response.body.usuarios[0]._id
   })
-})
+});
 
 Cypress.Commands.add('cadastrarProduto', (token, nome, preco, descricao, quantidade) => {
   cy.request({
@@ -74,9 +74,18 @@ Cypress.Commands.add('cadastrarProduto', (token, nome, preco, descricao, quantid
     },
     failOnStatusCode: false
   })
-})
+});
 
-
-
-
-
+Cypress.Commands.add('cadastrarUsuario', (token, nome, email, password, administrador) => {
+  cy.request({
+    method: "POST",
+    url: "/usuarios",
+    headers: { authorization: token },
+    body: {
+      "nome": nome,
+      "email": email,
+      "password": password,
+      "administrador": administrador
+    }
+  })
+});
