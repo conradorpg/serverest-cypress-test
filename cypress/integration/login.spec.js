@@ -5,7 +5,8 @@ describe('Testes com a API Serverest', () => {
   it('Login com sucesso', () => {
     cy.request({
       method: "POST",
-      url: "http://localhost:3000/login",
+      // url: "http://localhost:3000/login",
+      url: "https://serverest.dev/",
       body: {
         "email": "fulano_silva@qa.com.br",
         "password": "teste"
