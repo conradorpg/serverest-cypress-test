@@ -8,12 +8,16 @@ describe('Testes com a API Serverest - Usuarios', () => {
   let userId
 
   before(() => {
-    cy.token(
-      'fulano_silva@qa.com.br', 'teste')
+    cy.request('/usuarios').then(Response => {
+      let email = Response.body.usuarios[0].email
+      let password = Response.body.usuarios[0].password
+
+    cy.token(email, password)
       .then(key => { token = key })
 
     cy.userId()
       .then(code => { userId = code })
+    })
   });
 
   it('Validar contrato de usuários', () => {
@@ -26,7 +30,6 @@ describe('Testes com a API Serverest - Usuarios', () => {
     cy.request({
       method: "GET",
       url: "/usuarios",
-      body: {}
     }).then((Response) => {
       cy.log(Response.body.usuarios[2])
       expect(Response.status).to.equal(200)
@@ -71,7 +74,6 @@ describe('Testes com a API Serverest - Usuarios', () => {
     cy.request({
       method: "GET",
       url: `/usuarios/${userId}`,
-      body: {}
     }).then((Response) => {
       expect(Response.status).to.equal(200)
     })
@@ -82,7 +84,6 @@ describe('Testes com a API Serverest - Usuarios', () => {
       method: "DELETE",
       url: `/usuarios/${userId}`,
       headers: { authorization: token },
-      body: {}
     }).then((Response) => {
       expect(Response.status).to.equal(200)
     })

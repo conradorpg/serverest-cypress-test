@@ -8,12 +8,17 @@ describe('Testes com a API Serverest - Produtos', () => {
   let productId
 
   before(() => {
-    cy.token(
-      'fulano_silva@qa.com.br', 'teste')
+    cy.request('/usuarios').then(Response => {
+      let email = Response.body.usuarios[0].email
+      let password = Response.body.usuarios[0].password
+      
+      cy.token(email, password)
       .then(key => { token = key })
-
-    cy.productId()
+      
+      cy.productId()
       .then(code => { productId = code })
+      
+    })
   });
 
   it('Validar contrato de produtos', () => {
@@ -26,12 +31,11 @@ describe('Testes com a API Serverest - Produtos', () => {
     cy.request({
       method: "GET",
       url: "/produtos",
-      body: {}
     }).then((Response) => {
       cy.log(Response.body.produtos[2].nome)
       expect(Response.status).to.equal(200)
       expect(Response.body).to.have.property('produtos')
-      expect(Response.duration).to.be.lessThan(30)
+      // expect(Response.duration).to.be.lessThan(30)
       // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
     })
   });
@@ -54,7 +58,7 @@ describe('Testes com a API Serverest - Produtos', () => {
       // cy.log(Response.body.produtos[2].nome)
       expect(Response.status).to.equal(201)
       // expect(Response.body).to.have.property('produtos')
-      expect(Response.duration).to.be.lessThan(30)
+      // expect(Response.duration).to.be.lessThan(30)
       // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
     })
   });
@@ -63,12 +67,11 @@ describe('Testes com a API Serverest - Produtos', () => {
     cy.request({
       method: "GET",
       url: `/produtos/${productId}`,
-      body: {}
     }).then((Response) => {
       // cy.log(Response.body.produtos[2].nome)
       expect(Response.status).to.equal(200)
       // expect(Response.body).to.have.property('produtos')
-      expect(Response.duration).to.be.lessThan(30)
+      // expect(Response.duration).to.be.lessThan(30)
       // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
     })
   });
@@ -88,7 +91,7 @@ describe('Testes com a API Serverest - Produtos', () => {
           expect(Response.status).to.equal(200)
           expect(Response.body.message).to.equal('Registro excluído com sucesso' || 'Nenhum registro excluído')
           // expect(Response.body).to.have.property('produtos')
-          expect(Response.duration).to.be.lessThan(30)
+          // expect(Response.duration).to.be.lessThan(30)
           // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
         })
       })
@@ -112,7 +115,7 @@ describe('Testes com a API Serverest - Produtos', () => {
       // expect(Response.status).to.equal(200)
       // expect(Response.body.message).to.equal('Registro alterado com sucesso')
       // expect(Response.body).to.have.property('produtos')
-      expect(Response.duration).to.be.lessThan(30)
+      // expect(Response.duration).to.be.lessThan(30)
       // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
     })
   });
@@ -122,7 +125,7 @@ describe('Testes com a API Serverest - Produtos', () => {
     let produto = faker.commerce.product()
     let item = num + produto
     cy.request('/produtos').then(Response => {
-      let id = Response.body.produtos[0]._id
+      let id = Response.body.produtos[2]._id
       cy.request({
         method: 'PUT',
         url: `produtos/${id}`,
@@ -168,9 +171,9 @@ describe('Testes com a API Serverest - Produtos', () => {
     cy.cadastrarProduto(token, 'Logitech MX Vertical', 178, 'Mouse', 250)
       .then((Response) => {
         // cy.log(Response.body.produtos[2].nome)
-        expect(Response.status).to.equal(400),
+        expect(Response.status).to.equal(400)
           // expect(Response.body).to.have.property('produtos')
-          expect(Response.duration).to.be.lessThan(30)
+          // expect(Response.duration).to.be.lessThan(30)
         // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
       })
   });

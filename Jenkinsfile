@@ -2,11 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Serverest') {
-            steps {
-                sh 'npx serverest'
-            }
-        }
         stage('Repositório') {
             steps {
                 git branch: 'main', url: 'https://github.com/conradorpg/serverest-cypress-test.git'
