@@ -32,7 +32,7 @@ describe('Testes com a API Serverest - Produtos', () => {
       method: "GET",
       url: "/produtos",
     }).then((Response) => {
-      cy.log(Response.body.produtos[2].nome)
+      cy.log(Response.body.produtos[0].nome)
       expect(Response.status).to.equal(200)
       expect(Response.body).to.have.property('produtos')
       // expect(Response.duration).to.be.lessThan(30)
@@ -168,7 +168,10 @@ describe('Testes com a API Serverest - Produtos', () => {
   // -- CENÁRIOS NEGATIVOS --
 
   it('Cadastrar produtos idêntico', () => {
-    cy.cadastrarProduto(token, 'Logitech MX Vertical', 178, 'Mouse', 250)
+    cy.request('/produtos').then(Response => {
+      let nome = Response.body.produtos[0].nome
+      let descricao = Response.body.produtos[0].descricao
+    cy.cadastrarProduto(token, nome, 178, descricao, 250)
       .then((Response) => {
         // cy.log(Response.body.produtos[2].nome)
         expect(Response.status).to.equal(400)
@@ -176,6 +179,7 @@ describe('Testes com a API Serverest - Produtos', () => {
           // expect(Response.duration).to.be.lessThan(30)
         // expect(Response.body.produtos[2].nome).to.equal('Samsung 60 polegadas')
       })
+    })
   });
 
 })

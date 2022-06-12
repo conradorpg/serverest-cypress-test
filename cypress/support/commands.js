@@ -45,7 +45,7 @@ Cypress.Commands.add('productId', () => {
     url: "/produtos",
   }).then((Response) => {
     expect(Response.status).to.equal(200)
-    return Response.body.produtos[2]._id
+    return Response.body.produtos[0]._id
   })
 })
 
@@ -55,7 +55,7 @@ Cypress.Commands.add('userId', () => {
     url: "/usuarios",
   }).then((Response) => {
     expect(Response.status).to.equal(200)
-    return Response.body.usuarios[2]._id
+    return Response.body.usuarios[0]._id
   })
 });
 
